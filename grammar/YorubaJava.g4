@@ -19,7 +19,10 @@ SEMI    : ';' ;
 
 // Literals
 STRING  : '"' (~["\r\n])* '"' ;
-ID      : [a-zA-Z_][a-zA-Z_0-9]* ;
+ID
+  : [\p{L}_] [\p{L}\p{Nd}_]* 
+  ;
+
 
 // Comments and Whitespace
 LINE_COMMENT : '//' ~[\r\n]* -> skip ;

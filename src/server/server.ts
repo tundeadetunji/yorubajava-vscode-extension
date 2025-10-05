@@ -95,7 +95,7 @@ documents.onDidChangeContent((change) => {
             start: { line: line - 1, character: charPositionInLine },
             end: { line: line - 1, character: charPositionInLine + 1 },
           },
-          source: "yorubajava-parser",
+          source: "YorubaJava Parser",
         });
       },
     });
