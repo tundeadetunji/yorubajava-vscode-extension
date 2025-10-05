@@ -8,8 +8,13 @@ import {
   DiagnosticSeverity
 } from "vscode-languageserver/node";
 import { TextDocument } from "vscode-languageserver-textdocument";
+import { ANTLRInputStream, CommonTokenStream } from 'antlr4ts';
+import { YorubaJavaLexer } from './parser/YorubaJavaLexer';
+import { YorubaJavaParser } from './parser/YorubaJavaParser';
 
+// -------------------------------------------------------
 // Create the LSP connection and text document manager
+// -------------------------------------------------------
 const connection = createConnection(ProposedFeatures.all);
 const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
@@ -18,12 +23,16 @@ connection.onInitialize((_params: InitializeParams) => ({
   capabilities: { textDocumentSync: TextDocumentSyncKind.Incremental }
 }));
 
-// Example diagnostic: prove LSP works and ignore comments
+// -------------------------------------------------------
+// Combined diagnostics: Regex demo + ANTLR parser
+// -------------------------------------------------------
 documents.onDidChangeContent(change => {
   const document = change.document;
   const text = document.getText();
 
-  // Compute comment ranges so we can skip them later
+  const diagnostics: Diagnostic[] = [];
+
+  // --- Regex-based Yoruba keyword check (existing feature)
   const commentRanges: [number, number][] = [];
 
   // Match // comments
@@ -38,16 +47,12 @@ documents.onDidChangeContent(change => {
     commentRanges.push([m.index!, m.index! + m[0].length]);
   }
 
-  // Search entire text for Yoruba keyword
-  const diagnostics: Diagnostic[] = [];
+  // Detect Yoruba keyword 'asise' (example)
   const pattern = /\basise\b/g;
   let match: RegExpExecArray | null;
-
   while ((match = pattern.exec(text))) {
     const startIndex = match.index!;
-    const endIndex = match.index! + match[0].length;
-
-    // Skip if inside a comment
+    const endIndex = startIndex + match[0].length;
     const insideComment = commentRanges.some(
       ([from, to]) => startIndex >= from && endIndex <= to
     );
@@ -64,49 +69,42 @@ documents.onDidChangeContent(change => {
     });
   }
 
+  // --- ANTLR parser-based syntax validation
+  try {
+    const inputStream = new ANTLRInputStream(text);
+    const lexer = new YorubaJavaLexer(inputStream);
+    const tokenStream = new CommonTokenStream(lexer);
+    const parser = new YorubaJavaParser(tokenStream);
+
+    parser.removeErrorListeners();
+
+    parser.addErrorListener({
+      syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg) {
+        diagnostics.push({
+          severity: DiagnosticSeverity.Error,
+          message: msg,
+          range: {
+            start: { line: line - 1, character: charPositionInLine },
+            end: { line: line - 1, character: charPositionInLine + 1 }
+          },
+          source: 'yorubajava-parser'
+        });
+      }
+    });
+
+    // Parse the file (root rule)
+    parser.compilationUnit();
+
+  } catch (err) {
+    connection.console.error(`Parser error: ${err}`);
+  }
+
+  // Send both regex + ANTLR diagnostics to the client
   connection.sendDiagnostics({ uri: document.uri, diagnostics });
 });
 
-
+// -------------------------------------------------------
 // Listen for document events and start the server
+// -------------------------------------------------------
 documents.listen(connection);
 connection.listen();
-
-
-
-
-// import {
-//   createConnection,
-//   TextDocuments,
-//   ProposedFeatures,
-//   InitializeParams,
-//   TextDocumentSyncKind,
-//   Diagnostic,
-//   DiagnosticSeverity
-// } from "vscode-languageserver/node";
-// import { TextDocument } from "vscode-languageserver-textdocument";
-
-// const connection = createConnection(ProposedFeatures.all);
-// const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
-
-// connection.onInitialize((_params: InitializeParams) => ({
-//   capabilities: { textDocumentSync: TextDocumentSyncKind.Incremental }
-// }));
-
-// // Simple example diagnostic to prove LSP works
-// documents.onDidChangeContent(change => {
-//   const text = change.document.getText();
-//   const diags: Diagnostic[] = [];
-//   if (text.includes("asise")) {
-//     diags.push({
-//       severity: DiagnosticSeverity.Warning,
-//       range: { start: { line: 0, character: 0 }, end: { line: 0, character: 5 } },
-//       message: "Found the word 'asise' — pretend warning.",
-//       source: "yorubajava"
-//     });
-//   }
-//   connection.sendDiagnostics({ uri: change.document.uri, diagnostics: diags });
-// });
-
-// documents.listen(connection);
-// connection.listen();
