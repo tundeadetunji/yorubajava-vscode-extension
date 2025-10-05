@@ -93,7 +93,8 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "antlr4ts": "antlr4ts -visitor -o src/parser grammar/YorubaJava.g4"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",

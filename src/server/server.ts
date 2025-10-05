@@ -11,6 +11,9 @@ import { TextDocument } from "vscode-languageserver-textdocument";
 import { ANTLRInputStream, CommonTokenStream } from 'antlr4ts';
 import { YorubaJavaLexer } from './parser/YorubaJavaLexer';
 import { YorubaJavaParser } from './parser/YorubaJavaParser';
+import { YorubaJavaTreeVisitor } from "../visitors/YorubaJavaTreeVisitor";
+
+
 
 // -------------------------------------------------------
 // Create the LSP connection and text document manager
@@ -94,6 +97,20 @@ documents.onDidChangeContent(change => {
 
     // Parse the file (root rule)
     parser.compilationUnit();
+
+    // --- Stage 3b: Parse-tree traversal ---
+    try {
+      const tree = parser.compilationUnit();
+      const visitor = new YorubaJavaTreeVisitor();
+      visitor.visit(tree);
+
+      const info = visitor.getCollectedInfo();
+      console.log("Parsed classes:", info.classes);
+      console.log("Parsed methods:", info.methods);
+    } catch (err) {
+      console.error("Visitor error:", err);
+    }
+
 
   } catch (err) {
     connection.console.error(`Parser error: ${err}`);
