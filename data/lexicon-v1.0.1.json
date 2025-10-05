@@ -1,0 +1,495 @@
+{
+    "meta": {
+        "version": "1.0.1",
+        "language": "YorubaJava",
+        "description": "Core Yoruba mappings for Java keywords and identifiers — contextually natural and prose-readable.",
+        "author": "Tunde Adetunji",
+        "generated": "2025-10-04"
+    },
+    "keywords": {
+        "abstract": {
+            "default": [
+                "afomo"
+            ],
+            "yorlang": [
+                "abstiraikti"
+            ]
+        },
+        "assert": {
+            "default": [
+                "fiidi"
+            ],
+            "yorlang": []
+        },
+        "boolean": {
+            "default": [
+                "itẹsi"
+            ],
+            "yorlang": []
+        },
+        "break": {
+            "default": [
+                "fopin"
+            ],
+            "yorlang": []
+        },
+        "byte": {
+            "default": [
+                "kekepo"
+            ],
+            "yorlang": []
+        },
+        "case": {
+            "default": [
+                "oro"
+            ],
+            "yorlang": []
+        },
+        "catch": {
+            "default": [
+                "muba"
+            ],
+            "yorlang": []
+        },
+        "char": {
+            "default": [
+                "ami"
+            ],
+            "yorlang": []
+        },
+        "class": {
+            "default": [
+                "ẹ̀ka",
+                "eka"
+            ],
+            "yorlang": [
+                "kilasi",
+                "kilaasi"
+            ]
+        },
+        "const": {
+            "default": [
+                "titunmọ́"
+            ],
+            "yorlang": []
+        },
+        "continue": {
+            "default": [
+                "tẹsiwaju"
+            ],
+            "yorlang": []
+        },
+        "default": {
+            "default": [
+                "aifọwọyi"
+            ],
+            "yorlang": []
+        },
+        "do": {
+            "default": [
+                "ṣe"
+            ],
+            "yorlang": []
+        },
+        "double": {
+            "default": [
+                "meji"
+            ],
+            "yorlang": []
+        },
+        "else": {
+            "default": [
+                "bibẹẹkọ"
+            ],
+            "yorlang": []
+        },
+        "enum": {
+            "default": [
+                "akojọ"
+            ],
+            "yorlang": []
+        },
+        "extends": {
+            "default": [
+                "faagun"
+            ],
+            "yorlang": []
+        },
+        "final": {
+            "default": [
+                "ipari"
+            ],
+            "yorlang": []
+        },
+        "finally": {
+            "default": [
+                "nipari"
+            ],
+            "yorlang": []
+        },
+        "float": {
+            "default": [
+                "lefo"
+            ],
+            "yorlang": []
+        },
+        "for": {
+            "default": [
+                "fun"
+            ],
+            "yorlang": []
+        },
+        "goto": {
+            "default": [
+                "lọsi"
+            ],
+            "yorlang": []
+        },
+        "if": {
+            "default": [
+                "bi"
+            ],
+            "yorlang": []
+        },
+        "implements": {
+            "default": [
+                "lojuwe"
+            ],
+            "yorlang": []
+        },
+        "import": {
+            "default": [
+                "wọle"
+            ],
+            "yorlang": []
+        },
+        "instanceof": {
+            "default": [
+                "apẹẹrẹti"
+            ],
+            "yorlang": []
+        },
+        "int": {
+            "default": [
+                "nọmba"
+            ],
+            "yorlang": []
+        },
+        "interface": {
+            "default": [
+                "ibasọrọ"
+            ],
+            "yorlang": [
+                "intafesi"
+            ]
+        },
+        "long": {
+            "default": [
+                "gigun"
+            ],
+            "yorlang": []
+        },
+        "native": {
+            "default": [
+                "abínibí"
+            ],
+            "yorlang": []
+        },
+        "new": {
+            "default": [
+                "tuntun"
+            ],
+            "yorlang": []
+        },
+        "null": {
+            "default": [
+                "ofo"
+            ],
+            "yorlang": []
+        },
+        "package": {
+            "default": [
+                "apoti"
+            ],
+            "yorlang": []
+        },
+        "private": {
+            "default": [
+                "aládani"
+            ],
+            "yorlang": []
+        },
+        "protected": {
+            "default": [
+                "abojuto"
+            ],
+            "yorlang": []
+        },
+        "public": {
+            "default": [
+                "gbogbo"
+            ],
+            "yorlang": []
+        },
+        "return": {
+            "default": [
+                "padà"
+            ],
+            "yorlang": []
+        },
+        "short": {
+            "default": [
+                "kukuru"
+            ],
+            "yorlang": []
+        },
+        "static": {
+            "default": [
+                "diduro"
+            ],
+            "yorlang": []
+        },
+        "strictfp": {
+            "default": [
+                "pataleti"
+            ],
+            "yorlang": []
+        },
+        "super": {
+            "default": [
+                "agba"
+            ],
+            "yorlang": []
+        },
+        "switch": {
+            "default": [
+                "yipada"
+            ],
+            "yorlang": []
+        },
+        "synchronized": {
+            "default": [
+                "afọpọ̀"
+            ],
+            "yorlang": []
+        },
+        "this": {
+            "default": [
+                "eyi"
+            ],
+            "yorlang": []
+        },
+        "throw": {
+            "default": [
+                "ju"
+            ],
+            "yorlang": []
+        },
+        "throws": {
+            "default": [
+                "nju"
+            ],
+            "yorlang": []
+        },
+        "transient": {
+            "default": [
+                "aikokoko"
+            ],
+            "yorlang": []
+        },
+        "try": {
+            "default": [
+                "gbiyanju"
+            ],
+            "yorlang": []
+        },
+        "void": {
+            "default": [
+                "ofo"
+            ],
+            "yorlang": []
+        },
+        "volatile": {
+            "default": [
+                "yiyipada"
+            ],
+            "yorlang": []
+        },
+        "while": {
+            "default": [
+                "nígbàtí"
+            ],
+            "yorlang": []
+        },
+        "record": {
+            "default": [
+                "ako"
+            ],
+            "yorlang": []
+        },
+        "var": {
+            "default": [
+                "oniyipada"
+            ],
+            "yorlang": []
+        },
+        "yield": {
+            "default": [
+                "fi"
+            ],
+            "yorlang": []
+        }
+    },
+    "identifiers": {
+        "System": {
+            "default": [
+                "eto"
+            ],
+            "yorlang": []
+        },
+        "out": {
+            "default": [
+                "jade"
+            ],
+            "yorlang": []
+        },
+        "in": {
+            "default": [
+                "inu"
+            ],
+            "yorlang": []
+        },
+        "println": {
+            "default": [
+                "kọlaini"
+            ],
+            "yorlang": []
+        },
+        "print": {
+            "default": [
+                "kọ"
+            ],
+            "yorlang": []
+        },
+        "String": {
+            "default": [
+                "okùn"
+            ],
+            "yorlang": []
+        },
+        "Object": {
+            "default": [
+                "nkan"
+            ],
+            "yorlang": []
+        },
+        "Number": {
+            "default": [
+                "nọmba"
+            ],
+            "yorlang": []
+        },
+        "Integer": {
+            "default": [
+                "nọmbaGbogbo"
+            ],
+            "yorlang": []
+        },
+        "Double": {
+            "default": [
+                "nọmbaMeji"
+            ],
+            "yorlang": []
+        },
+        "Float": {
+            "default": [
+                "nọmbaLefo"
+            ],
+            "yorlang": []
+        },
+        "Boolean": {
+            "default": [
+                "otitọ"
+            ],
+            "yorlang": []
+        },
+        "Character": {
+            "default": [
+                "ọmọami"
+            ],
+            "yorlang": []
+        },
+        "Math": {
+            "default": [
+                "isiro"
+            ],
+            "yorlang": []
+        },
+        "main": {
+            "default": [
+                "pataki"
+            ],
+            "yorlang": []
+        },
+        "this": {
+            "default": [
+                "eyi"
+            ],
+            "yorlang": []
+        },
+        "super": {
+            "default": [
+                "agba"
+            ],
+            "yorlang": []
+        },
+        "toString": {
+            "default": [
+                "siOkùn"
+            ],
+            "yorlang": []
+        },
+        "equals": {
+            "default": [
+                "dogba"
+            ],
+            "yorlang": []
+        },
+        "hashCode": {
+            "default": [
+                "kooduAsa"
+            ],
+            "yorlang": []
+        },
+        "Exception": {
+            "default": [
+                "aṣiṣe"
+            ],
+            "yorlang": []
+        },
+        "Error": {
+            "default": [
+                "aṣiṣePataki"
+            ],
+            "yorlang": []
+        },
+        "Runtime": {
+            "default": [
+                "akokoIṣiṣẹ"
+            ],
+            "yorlang": []
+        },
+        "Thread": {
+            "default": [
+                "okùnIṣiṣẹ"
+            ],
+            "yorlang": []
+        },
+        "Array": {
+            "default": [
+                "akojọ"
+            ],
+            "yorlang": []
+        }
+    }
+}

@@ -1,0 +1,108 @@
+{
+  "name": "yorubajava",
+  "displayName": "yorubajava",
+  "description": "Yoruba-localized Java language support (syntax, completions, diagnostics)",
+  "version": "1.0.0",
+  "publisher": "tundeadetunji",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.104.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Themes"
+  ],
+  "activationEvents": [
+    "onLanguage:yorubajava"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "yorubajava",
+        "aliases": ["YorubaJava", "yjava"],
+        "extensions": [".yjava"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "yorubajava",
+        "scopeName": "source.yorubajava",
+        "path": "./syntaxes/yorubajava.tmLanguage.json",
+        "embeddedLanguages": {}
+      }
+    ],
+    "themes": [
+      {
+        "label": "Yoruba Java - Dark+",
+        "uiTheme": "vs-dark",
+        "path": "./themes/yorubajava-dark-plus-color-theme.json"
+      }
+    ],
+    "tokenColors": [
+      {
+        "scope": "keyword.control.yorubajava",
+        "settings": {
+          "foreground": "#C586C0",
+          "fontStyle": "bold"
+        }
+      },
+      {
+        "scope": "storage.type.yorubajava",
+        "settings": {
+          "foreground": "#569CD6"
+        }
+      },
+      {
+        "scope": "string.quoted.double.yorubajava",
+        "settings": {
+          "foreground": "#CE9178"
+        }
+      },
+      {
+        "scope": "comment.line.double-slash.yorubajava",
+        "settings": {
+          "foreground": "#6A9955",
+          "fontStyle": "italic"
+        }
+      },
+      {
+        "scope": "constant.numeric.yorubajava",
+        "settings": {
+          "foreground": "#B5CEA8"
+        }
+      },
+      {
+        "scope": "variable.other.yorubajava",
+        "settings": {
+          "foreground": "#9CDCFE"
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.18.8",
+    "@types/vscode": "^1.104.0",
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.36.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-textdocument": "^1.0.12"
+  }
+}

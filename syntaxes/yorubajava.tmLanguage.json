@@ -1,0 +1,80 @@
+{
+  "name": "YorubaJava",
+  "scopeName": "source.yorubajava",
+  "fileTypes": ["yjava"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#keywords" },
+    { "include": "#types" },
+    { "include": "#functions" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.yorubajava",
+          "match": "//.*$"
+        },
+        {
+          "name": "comment.block.yorubajava",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.yorubajava",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            { "match": "\\\\.", "name": "constant.character.escape.yorubajava" }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.yorubajava",
+          "match": "\\b\\d+(\\.\\d+)?\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.yorubajava",
+          "match": "\\b(asise|bi|bibẹẹkọ|jẹ́|kọ|fún|tí|pada|tọju|kilasi|eka|ṣe|wọlé|jẹwọ|tan|fi|sí)\\b"
+        },
+        {
+          "name": "keyword.operator.yorubajava",
+          "match": "\\b(ati|tabi|kìí|kò|bẹ́ẹ̀ni)\\b"
+        },
+        {
+          "name": "storage.type.yorubajava",
+          "match": "\\b(akọ́kọ́|irú|ọ̀rọ̀|ọna|àmúlò|boolean|int|string|array|ọbẹ)\\b"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "support.type.yorubajava",
+          "match": "\\b([A-Z][a-zA-Z0-9_]*)\\b"
+        }
+      ]
+    },
+    "functions": {
+      "patterns": [
+        {
+          "name": "entity.name.function.yorubajava",
+          "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()"
+        }
+      ]
+    }
+  }
+}

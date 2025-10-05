@@ -1,0 +1,32 @@
+{
+  "$schema": "vscode://schemas/color-theme",
+  "name": "Yoruba Java - Dark+",
+  "type": "dark",
+  "colors": {},
+  "tokenColors": [
+    {
+      "scope": ["keyword.control.yorubajava"],
+      "settings": { "foreground": "#C586C0", "fontStyle": "bold" }
+    },
+    {
+      "scope": ["storage.type.yorubajava"],
+      "settings": { "foreground": "#569CD6" }
+    },
+    {
+      "scope": ["string.quoted.double.yorubajava"],
+      "settings": { "foreground": "#CE9178" }
+    },
+    {
+      "scope": ["comment.line.double-slash.yorubajava"],
+      "settings": { "foreground": "#6A9955", "fontStyle": "italic" }
+    },
+    {
+      "scope": ["constant.numeric.yorubajava"],
+      "settings": { "foreground": "#B5CEA8" }
+    },
+    {
+      "scope": ["variable.other.yorubajava"],
+      "settings": { "foreground": "#9CDCFE" }
+    }
+  ]
+}
