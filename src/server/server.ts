@@ -5,15 +5,13 @@ import {
   InitializeParams,
   TextDocumentSyncKind,
   Diagnostic,
-  DiagnosticSeverity
+  DiagnosticSeverity,
 } from "vscode-languageserver/node";
 import { TextDocument } from "vscode-languageserver-textdocument";
-import { ANTLRInputStream, CommonTokenStream } from 'antlr4ts';
-import { YorubaJavaLexer } from './parser/YorubaJavaLexer';
-import { YorubaJavaParser } from './parser/YorubaJavaParser';
+import { ANTLRInputStream, CommonTokenStream } from "antlr4ts";
+import { YorubaJavaLexer } from "./parser/YorubaJavaLexer";
+import { YorubaJavaParser } from "./parser/YorubaJavaParser";
 import { YorubaJavaTreeVisitor } from "../visitors/YorubaJavaTreeVisitor";
-
-
 
 // -------------------------------------------------------
 // Create the LSP connection and text document manager
@@ -21,36 +19,44 @@ import { YorubaJavaTreeVisitor } from "../visitors/YorubaJavaTreeVisitor";
 const connection = createConnection(ProposedFeatures.all);
 const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
-// Basic initialization response
-connection.onInitialize((_params: InitializeParams) => ({
-  capabilities: { textDocumentSync: TextDocumentSyncKind.Incremental }
-}));
+// -------------------------------------------------------
+// Initialization: advertise all supported capabilities
+// -------------------------------------------------------
+connection.onInitialize((_params: InitializeParams) => {
+  return {
+    capabilities: {
+      textDocumentSync: TextDocumentSyncKind.Incremental,
+
+      // --- Stage 4a: Hover + Completion support ---
+      hoverProvider: true,
+      completionProvider: {
+        resolveProvider: true,
+        triggerCharacters: [" ", ".", "(", "ọ", "ṣ", "d"], // Yoruba + common triggers
+      },
+    },
+  };
+});
 
 // -------------------------------------------------------
 // Combined diagnostics: Regex demo + ANTLR parser
 // -------------------------------------------------------
-documents.onDidChangeContent(change => {
+documents.onDidChangeContent((change) => {
   const document = change.document;
   const text = document.getText();
-
   const diagnostics: Diagnostic[] = [];
 
-  // --- Regex-based Yoruba keyword check (existing feature)
+  // --- Regex-based Yoruba keyword check (demo) ---
   const commentRanges: [number, number][] = [];
 
   // Match // comments
   const lineComments = [...text.matchAll(/\/\/.*$/gm)];
-  for (const m of lineComments) {
-    commentRanges.push([m.index!, m.index! + m[0].length]);
-  }
+  for (const m of lineComments) commentRanges.push([m.index!, m.index! + m[0].length]);
 
   // Match /* ... */ comments
   const blockComments = [...text.matchAll(/\/\*[\s\S]*?\*\//g)];
-  for (const m of blockComments) {
-    commentRanges.push([m.index!, m.index! + m[0].length]);
-  }
+  for (const m of blockComments) commentRanges.push([m.index!, m.index! + m[0].length]);
 
-  // Detect Yoruba keyword 'asise' (example)
+  // Detect Yoruba keyword 'asise' (demo)
   const pattern = /\basise\b/g;
   let match: RegExpExecArray | null;
   while ((match = pattern.exec(text))) {
@@ -65,14 +71,14 @@ documents.onDidChangeContent(change => {
       severity: DiagnosticSeverity.Warning,
       range: {
         start: document.positionAt(startIndex),
-        end: document.positionAt(endIndex)
+        end: document.positionAt(endIndex),
       },
       message: `Detected Yoruba keyword '${match[0]}'. (Demo diagnostic — LSP is active.)`,
-      source: "yorubajava"
+      source: "yorubajava",
     });
   }
 
-  // --- ANTLR parser-based syntax validation
+  // --- ANTLR parser-based syntax validation ---
   try {
     const inputStream = new ANTLRInputStream(text);
     const lexer = new YorubaJavaLexer(inputStream);
@@ -80,7 +86,6 @@ documents.onDidChangeContent(change => {
     const parser = new YorubaJavaParser(tokenStream);
 
     parser.removeErrorListeners();
-
     parser.addErrorListener({
       syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg) {
         diagnostics.push({
@@ -88,11 +93,11 @@ documents.onDidChangeContent(change => {
           message: msg,
           range: {
             start: { line: line - 1, character: charPositionInLine },
-            end: { line: line - 1, character: charPositionInLine + 1 }
+            end: { line: line - 1, character: charPositionInLine + 1 },
           },
-          source: 'yorubajava-parser'
+          source: "yorubajava-parser",
         });
-      }
+      },
     });
 
     // Parse the file (root rule)
@@ -110,8 +115,6 @@ documents.onDidChangeContent(change => {
     } catch (err) {
       console.error("Visitor error:", err);
     }
-
-
   } catch (err) {
     connection.console.error(`Parser error: ${err}`);
   }
@@ -119,6 +122,72 @@ documents.onDidChangeContent(change => {
   // Send both regex + ANTLR diagnostics to the client
   connection.sendDiagnostics({ uri: document.uri, diagnostics });
 });
+
+// -------------------------------------------------------
+// --- Stage 4b: Hover Support ---
+// -------------------------------------------------------
+// -------------------------------------------------------
+// --- Stage 4b: Hover Support ---
+// -------------------------------------------------------
+connection.onHover((params) => {
+  const { textDocument, position } = params;
+  const document = documents.get(textDocument.uri);
+  if (!document) return null;
+
+  // Get offset from position
+  const offset = document.offsetAt(position);
+  const text = document.getText();
+
+  // Find word boundaries (letters, Yoruba letters, or underscore)
+  const left = text.slice(0, offset).search(/[a-zA-Zọṣ_]+$/u);
+  const rightMatch = text.slice(offset).match(/^[a-zA-Zọṣ_]+/u);
+  const word =
+    left >= 0 && rightMatch
+      ? text.slice(left, offset + rightMatch[0].length)
+      : "";
+
+  // Keyword documentation
+  const hoverInfo: Record<string, string> = {
+    "gbogbo": "Keyword: declares visibility or scope (public).",
+    "kilasi": "Keyword: 'class' — begins a class declaration.",
+    "diduro": "Keyword: defines a static or shared function.",
+    "ofe": "Keyword: defines the return type 'void'.",
+    "sọ": "Keyword: print statement (equivalent to System.out.println).",
+    "bẹrẹ": "Keyword: 'start' — entry point function (like 'main').",
+  };
+
+  const contents = hoverInfo[word];
+  if (contents) {
+    return {
+      contents: {
+        kind: "markdown",
+        value: `**${word}**\n\n${contents}`,
+      },
+    };
+  }
+
+  return null;
+});
+
+// -------------------------------------------------------
+// --- Stage 4c: Completion Support ---
+// -------------------------------------------------------
+connection.onCompletion((_textDocumentPosition) => {
+  return [
+    { label: "gbogbo", kind: 14, detail: "Begin class definition" },
+    { label: "kilasi", kind: 14, detail: "Keyword: class" },
+    { label: "diduro", kind: 14, detail: "Define function" },
+    { label: "ofe", kind: 14, detail: "Return type: void" },
+    { label: "sọ", kind: 14, detail: "Print statement" },
+    { label: "bẹrẹ", kind: 14, detail: "Function entry point" },
+  ];
+});
+
+// Optional: provide extra info when hovering over completion items
+connection.onCompletionResolve((item) => ({
+  ...item,
+  documentation: `**${item.label}**: YorubaJava keyword.`,
+}));
 
 // -------------------------------------------------------
 // Listen for document events and start the server
