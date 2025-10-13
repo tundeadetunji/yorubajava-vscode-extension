@@ -88,14 +88,16 @@
   },
   "scripts": {
     "transpile": "npx ts-node scripts/transpile.ts",
+    "prepare-grammar": "ts-node scripts/generate-grammar.ts",
+    "antlr:gen": "npx antlr4ts -visitor -no-listener -o src/parser grammar/YorubaJava.g4",
     "generate-parser": "antlr4ts -visitor -no-listener -o src/server/parser grammar/YorubaJava.g4",
+    "antlr4ts": "antlr4ts -visitor -o src/parser grammar/YorubaJava.g4",
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
+    "compile": "npm run prepare-grammar && npm run antlr:gen && tsc",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
-    "test": "vscode-test",
-    "antlr4ts": "antlr4ts -visitor -o src/parser grammar/YorubaJava.g4"
+    "test": "vscode-test"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",

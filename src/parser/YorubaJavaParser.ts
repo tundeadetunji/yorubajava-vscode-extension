@@ -27,24 +27,75 @@ import { YorubaJavaVisitor } from "./YorubaJavaVisitor";
 
 
 export class YorubaJavaParser extends Parser {
-	public static readonly CLASS = 1;
-	public static readonly PUBLIC = 2;
-	public static readonly STATIC = 3;
-	public static readonly VOID = 4;
-	public static readonly MAIN = 5;
-	public static readonly PRINT = 6;
-	public static readonly LBRACE = 7;
-	public static readonly RBRACE = 8;
-	public static readonly LPAREN = 9;
-	public static readonly RPAREN = 10;
-	public static readonly SEMI = 11;
-	public static readonly DOT = 12;
-	public static readonly COMMA = 13;
-	public static readonly STRING = 14;
-	public static readonly ID = 15;
-	public static readonly LINE_COMMENT = 16;
-	public static readonly BLOCK_COMMENT = 17;
-	public static readonly WS = 18;
+	public static readonly ABSTRACT = 1;
+	public static readonly ASSERT = 2;
+	public static readonly BOOLEAN = 3;
+	public static readonly BREAK = 4;
+	public static readonly BYTE = 5;
+	public static readonly CASE = 6;
+	public static readonly CATCH = 7;
+	public static readonly CHAR = 8;
+	public static readonly CLASS = 9;
+	public static readonly CONST = 10;
+	public static readonly CONTINUE = 11;
+	public static readonly DEFAULT = 12;
+	public static readonly DO = 13;
+	public static readonly DOUBLE = 14;
+	public static readonly ELSE = 15;
+	public static readonly ENUM = 16;
+	public static readonly EXTENDS = 17;
+	public static readonly FINAL = 18;
+	public static readonly FINALLY = 19;
+	public static readonly FLOAT = 20;
+	public static readonly FOR = 21;
+	public static readonly GOTO = 22;
+	public static readonly IF = 23;
+	public static readonly IMPLEMENTS = 24;
+	public static readonly IMPORT = 25;
+	public static readonly INSTANCEOF = 26;
+	public static readonly INT = 27;
+	public static readonly INTERFACE = 28;
+	public static readonly LONG = 29;
+	public static readonly MAIN = 30;
+	public static readonly NATIVE = 31;
+	public static readonly NEW = 32;
+	public static readonly NULL = 33;
+	public static readonly PACKAGE = 34;
+	public static readonly PRINTLN = 35;
+	public static readonly PRINT = 36;
+	public static readonly PRIVATE = 37;
+	public static readonly PROTECTED = 38;
+	public static readonly PUBLIC = 39;
+	public static readonly RETURN = 40;
+	public static readonly SHORT = 41;
+	public static readonly STATIC = 42;
+	public static readonly STRICTFP = 43;
+	public static readonly SUPER = 44;
+	public static readonly SWITCH = 45;
+	public static readonly SYNCHRONIZED = 46;
+	public static readonly THIS = 47;
+	public static readonly THROW = 48;
+	public static readonly THROWS = 49;
+	public static readonly TRANSIENT = 50;
+	public static readonly TRY = 51;
+	public static readonly VOID = 52;
+	public static readonly VOLATILE = 53;
+	public static readonly WHILE = 54;
+	public static readonly RECORD = 55;
+	public static readonly VAR = 56;
+	public static readonly YIELD = 57;
+	public static readonly LBRACE = 58;
+	public static readonly RBRACE = 59;
+	public static readonly LPAREN = 60;
+	public static readonly RPAREN = 61;
+	public static readonly SEMI = 62;
+	public static readonly DOT = 63;
+	public static readonly COMMA = 64;
+	public static readonly STRING = 65;
+	public static readonly ID = 66;
+	public static readonly LINE_COMMENT = 67;
+	public static readonly BLOCK_COMMENT = 68;
+	public static readonly WS = 69;
 	public static readonly RULE_compilationUnit = 0;
 	public static readonly RULE_classDeclaration = 1;
 	public static readonly RULE_methodDeclaration = 2;
@@ -62,13 +113,30 @@ export class YorubaJavaParser extends Parser {
 	];
 
 	private static readonly _LITERAL_NAMES: Array<string | undefined> = [
-		undefined, "'kilasi'", "'gbogbo'", "'diduro'", "'ofe'", "'b\u1EB9r\u1EB9'", 
-		"'s\u1ECD'", "'{'", "'}'", "'('", "')'", "';'", "'.'", "','",
+		undefined, "'afomo'", "'fiidi'", "'it\u1EB9si'", "'fopin'", "'kekepo'", 
+		"'oro'", "'muba'", "'ami'", "'eka'", "'titunm\u1ECD\u0301'", "'t\u1EB9siwaju'", 
+		"'aif\u1ECDw\u1ECDyi'", "'\u1E63e'", "'meji'", "'bib\u1EB9\u1EB9k\u1ECD'", 
+		"'akoj\u1ECD'", "'faagun'", "'ipari'", "'nipari'", "'lefo'", "'fun'", 
+		"'l\u1ECDsi'", "'bi'", "'lojuwe'", "'w\u1ECDle'", "'ap\u1EB9\u1EB9r\u1EB9ti'", 
+		"'n\u1ECDmba'", "'ibas\u1ECDr\u1ECD'", "'gigun'", "'pataki'", "'ab\u00EDnib\u00ED'", 
+		"'tuntun'", "'ofo'", "'apoti'", "'kolaini'", "'ko'", "'al\u00E1dani'", 
+		"'abojuto'", "'gbogbo'", "'pad\u00E0'", "'kukuru'", "'diduro'", "'pataleti'", 
+		"'agba'", "'yipada'", "'af\u1ECDp\u1ECD\u0300'", "'eyi'", "'ju'", "'nju'", 
+		"'aikokoko'", "'gbiyanju'", "'ofe'", "'yiyipada'", "'n\u00EDgb\u00E0t\u00ED'", 
+		"'ako'", "'oniyipada'", "'fi'", "'{'", "'}'", "'('", "')'", "';'", "'.'", 
+		"','",
 	];
 	private static readonly _SYMBOLIC_NAMES: Array<string | undefined> = [
-		undefined, "CLASS", "PUBLIC", "STATIC", "VOID", "MAIN", "PRINT", "LBRACE", 
-		"RBRACE", "LPAREN", "RPAREN", "SEMI", "DOT", "COMMA", "STRING", "ID", 
-		"LINE_COMMENT", "BLOCK_COMMENT", "WS",
+		undefined, "ABSTRACT", "ASSERT", "BOOLEAN", "BREAK", "BYTE", "CASE", "CATCH", 
+		"CHAR", "CLASS", "CONST", "CONTINUE", "DEFAULT", "DO", "DOUBLE", "ELSE", 
+		"ENUM", "EXTENDS", "FINAL", "FINALLY", "FLOAT", "FOR", "GOTO", "IF", "IMPLEMENTS", 
+		"IMPORT", "INSTANCEOF", "INT", "INTERFACE", "LONG", "MAIN", "NATIVE", 
+		"NEW", "NULL", "PACKAGE", "PRINTLN", "PRINT", "PRIVATE", "PROTECTED", 
+		"PUBLIC", "RETURN", "SHORT", "STATIC", "STRICTFP", "SUPER", "SWITCH", 
+		"SYNCHRONIZED", "THIS", "THROW", "THROWS", "TRANSIENT", "TRY", "VOID", 
+		"VOLATILE", "WHILE", "RECORD", "VAR", "YIELD", "LBRACE", "RBRACE", "LPAREN", 
+		"RPAREN", "SEMI", "DOT", "COMMA", "STRING", "ID", "LINE_COMMENT", "BLOCK_COMMENT", 
+		"WS",
 	];
 	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(YorubaJavaParser._LITERAL_NAMES, YorubaJavaParser._SYMBOLIC_NAMES, []);
 
@@ -163,7 +231,7 @@ export class YorubaJavaParser extends Parser {
 			this.state = 37;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << YorubaJavaParser.PUBLIC) | (1 << YorubaJavaParser.STATIC) | (1 << YorubaJavaParser.VOID))) !== 0)) {
+			while (((((_la - 39)) & ~0x1F) === 0 && ((1 << (_la - 39)) & ((1 << (YorubaJavaParser.PUBLIC - 39)) | (1 << (YorubaJavaParser.STATIC - 39)) | (1 << (YorubaJavaParser.VOID - 39)))) !== 0)) {
 				{
 				{
 				this.state = 34;
@@ -263,7 +331,7 @@ export class YorubaJavaParser extends Parser {
 			this.state = 58;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << YorubaJavaParser.PRINT) | (1 << YorubaJavaParser.STRING) | (1 << YorubaJavaParser.ID))) !== 0)) {
+			while (((((_la - 36)) & ~0x1F) === 0 && ((1 << (_la - 36)) & ((1 << (YorubaJavaParser.PRINT - 36)) | (1 << (YorubaJavaParser.STRING - 36)) | (1 << (YorubaJavaParser.ID - 36)))) !== 0)) {
 				{
 				{
 				this.state = 55;
@@ -414,10 +482,6 @@ export class YorubaJavaParser extends Parser {
 			this.enterOuterAlt(_localctx, 1);
 			{
 			{
-			_localctx = new PrimaryExpressionContext(_localctx);
-			this._ctx = _localctx;
-			_prevctx = _localctx;
-
 			this.state = 77;
 			this.primary();
 			}
@@ -437,7 +501,7 @@ export class YorubaJavaParser extends Parser {
 					switch ( this.interpreter.adaptivePredict(this._input, 7, this._ctx) ) {
 					case 1:
 						{
-						_localctx = new FieldAccessContext(new ExpressionContext(_parentctx, _parentState));
+						_localctx = new ExpressionContext(_parentctx, _parentState);
 						this.pushNewRecursionContext(_localctx, _startState, YorubaJavaParser.RULE_expression);
 						this.state = 79;
 						if (!(this.precpred(this._ctx, 2))) {
@@ -452,7 +516,7 @@ export class YorubaJavaParser extends Parser {
 
 					case 2:
 						{
-						_localctx = new MethodCallContext(new ExpressionContext(_parentctx, _parentState));
+						_localctx = new ExpressionContext(_parentctx, _parentState);
 						this.pushNewRecursionContext(_localctx, _startState, YorubaJavaParser.RULE_expression);
 						this.state = 82;
 						if (!(this.precpred(this._ctx, 1))) {
@@ -599,48 +663,47 @@ export class YorubaJavaParser extends Parser {
 	}
 
 	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x14l\x04\x02" +
-		"\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07" +
-		"\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\v\t\v\x03\x02\x07\x02\x18\n\x02" +
-		"\f\x02\x0E\x02\x1B\v\x02\x03\x02\x03\x02\x03\x03\x05\x03 \n\x03\x03\x03" +
-		"\x03\x03\x03\x03\x03\x03\x07\x03&\n\x03\f\x03\x0E\x03)\v\x03\x03\x03\x03" +
-		"\x03\x03\x04\x07\x04.\n\x04\f\x04\x0E\x041\v\x04\x03\x04\x03\x04\x03\x04" +
-		"\x03\x04\x03\x04\x03\x04\x03\x05\x03\x05\x07\x05;\n\x05\f\x05\x0E\x05" +
-		">\v\x05\x03\x05\x03\x05\x03\x06\x03\x06\x05\x06D\n\x06\x03\x07\x03\x07" +
-		"\x03\x07\x03\x07\x03\x07\x03\x07\x03\b\x03\b\x03\b\x03\t\x03\t\x03\t\x03" +
-		"\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x05\tZ\n\t\x03\t\x07\t]\n" +
-		"\t\f\t\x0E\t`\v\t\x03\n\x03\n\x03\v\x03\v\x03\v\x07\vg\n\v\f\v\x0E\vj" +
-		"\v\v\x03\v\x02\x02\x03\x10\f\x02\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02" +
-		"\x0E\x02\x10\x02\x12\x02\x14\x02\x02\x04\x03\x02\x04\x05\x03\x02\x10\x11" +
-		"\x02k\x02\x19\x03\x02\x02\x02\x04\x1F\x03\x02\x02\x02\x06/\x03\x02\x02" +
-		"\x02\b8\x03\x02\x02\x02\nC\x03\x02\x02\x02\fE\x03\x02\x02\x02\x0EK\x03" +
-		"\x02\x02\x02\x10N\x03\x02\x02\x02\x12a\x03\x02\x02\x02\x14c\x03\x02\x02" +
-		"\x02\x16\x18\x05\x04\x03\x02\x17\x16\x03\x02\x02\x02\x18\x1B\x03\x02\x02" +
-		"\x02\x19\x17\x03\x02\x02\x02\x19\x1A\x03\x02\x02\x02\x1A\x1C\x03\x02\x02" +
-		"\x02\x1B\x19\x03\x02\x02\x02\x1C\x1D\x07\x02\x02\x03\x1D\x03\x03\x02\x02" +
-		"\x02\x1E \x07\x04\x02\x02\x1F\x1E\x03\x02\x02\x02\x1F \x03\x02\x02\x02" +
-		" !\x03\x02\x02\x02!\"\x07\x03\x02\x02\"#\x07\x11\x02\x02#\'\x07\t\x02" +
-		"\x02$&\x05\x06\x04\x02%$\x03\x02\x02\x02&)\x03\x02\x02\x02\'%\x03\x02" +
-		"\x02\x02\'(\x03\x02\x02\x02(*\x03\x02\x02\x02)\'\x03\x02\x02\x02*+\x07" +
-		"\n\x02\x02+\x05\x03\x02\x02\x02,.\t\x02\x02\x02-,\x03\x02\x02\x02.1\x03" +
-		"\x02\x02\x02/-\x03\x02\x02\x02/0\x03\x02\x02\x0202\x03\x02\x02\x021/\x03" +
-		"\x02\x02\x0223\x07\x06\x02\x0234\x07\x07\x02\x0245\x07\v\x02\x0256\x07" +
-		"\f\x02\x0267\x05\b\x05\x027\x07\x03\x02\x02\x028<\x07\t\x02\x029;\x05" +
-		"\n\x06\x02:9\x03\x02\x02\x02;>\x03\x02\x02\x02<:\x03\x02\x02\x02<=\x03" +
-		"\x02\x02\x02=?\x03\x02\x02\x02><\x03\x02\x02\x02?@\x07\n\x02\x02@\t\x03" +
-		"\x02\x02\x02AD\x05\f\x07\x02BD\x05\x0E\b\x02CA\x03\x02\x02\x02CB\x03\x02" +
-		"\x02\x02D\v\x03\x02\x02\x02EF\x07\b\x02\x02FG\x07\v\x02\x02GH\x05\x10" +
-		"\t\x02HI\x07\f\x02\x02IJ\x07\r\x02\x02J\r\x03\x02\x02\x02KL\x05\x10\t" +
-		"\x02LM\x07\r\x02\x02M\x0F\x03\x02\x02\x02NO\b\t\x01\x02OP\x05\x12\n\x02" +
-		"P^\x03\x02\x02\x02QR\f\x04\x02\x02RS\x07\x0E\x02\x02S]\x07\x11\x02\x02" +
-		"TU\f\x03\x02\x02UV\x07\x0E\x02\x02VW\x07\x11\x02\x02WY\x07\v\x02\x02X" +
-		"Z\x05\x14\v\x02YX\x03\x02\x02\x02YZ\x03\x02\x02\x02Z[\x03\x02\x02\x02" +
-		"[]\x07\f\x02\x02\\Q\x03\x02\x02\x02\\T\x03\x02\x02\x02]`\x03\x02\x02\x02" +
-		"^\\\x03\x02\x02\x02^_\x03\x02\x02\x02_\x11\x03\x02\x02\x02`^\x03\x02\x02" +
-		"\x02ab\t\x03\x02\x02b\x13\x03\x02\x02\x02ch\x05\x10\t\x02de\x07\x0F\x02" +
-		"\x02eg\x05\x10\t\x02fd\x03\x02\x02\x02gj\x03\x02\x02\x02hf\x03\x02\x02" +
-		"\x02hi\x03\x02\x02\x02i\x15\x03\x02\x02\x02jh\x03\x02\x02\x02\f\x19\x1F" +
-		"\'/<CY\\^h";
+		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03Gl\x04\x02\t\x02" +
+		"\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07\t\x07" +
+		"\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\v\t\v\x03\x02\x07\x02\x18\n\x02\f\x02" +
+		"\x0E\x02\x1B\v\x02\x03\x02\x03\x02\x03\x03\x05\x03 \n\x03\x03\x03\x03" +
+		"\x03\x03\x03\x03\x03\x07\x03&\n\x03\f\x03\x0E\x03)\v\x03\x03\x03\x03\x03" +
+		"\x03\x04\x07\x04.\n\x04\f\x04\x0E\x041\v\x04\x03\x04\x03\x04\x03\x04\x03" +
+		"\x04\x03\x04\x03\x04\x03\x05\x03\x05\x07\x05;\n\x05\f\x05\x0E\x05>\v\x05" +
+		"\x03\x05\x03\x05\x03\x06\x03\x06\x05\x06D\n\x06\x03\x07\x03\x07\x03\x07" +
+		"\x03\x07\x03\x07\x03\x07\x03\b\x03\b\x03\b\x03\t\x03\t\x03\t\x03\t\x03" +
+		"\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x05\tZ\n\t\x03\t\x07\t]\n\t\f\t" +
+		"\x0E\t`\v\t\x03\n\x03\n\x03\v\x03\v\x03\v\x07\vg\n\v\f\v\x0E\vj\v\v\x03" +
+		"\v\x02\x02\x03\x10\f\x02\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02" +
+		"\x10\x02\x12\x02\x14\x02\x02\x04\x04\x02)),,\x03\x02CD\x02k\x02\x19\x03" +
+		"\x02\x02\x02\x04\x1F\x03\x02\x02\x02\x06/\x03\x02\x02\x02\b8\x03\x02\x02" +
+		"\x02\nC\x03\x02\x02\x02\fE\x03\x02\x02\x02\x0EK\x03\x02\x02\x02\x10N\x03" +
+		"\x02\x02\x02\x12a\x03\x02\x02\x02\x14c\x03\x02\x02\x02\x16\x18\x05\x04" +
+		"\x03\x02\x17\x16\x03\x02\x02\x02\x18\x1B\x03\x02\x02\x02\x19\x17\x03\x02" +
+		"\x02\x02\x19\x1A\x03\x02\x02\x02\x1A\x1C\x03\x02\x02\x02\x1B\x19\x03\x02" +
+		"\x02\x02\x1C\x1D\x07\x02\x02\x03\x1D\x03\x03\x02\x02\x02\x1E \x07)\x02" +
+		"\x02\x1F\x1E\x03\x02\x02\x02\x1F \x03\x02\x02\x02 !\x03\x02\x02\x02!\"" +
+		"\x07\v\x02\x02\"#\x07D\x02\x02#\'\x07<\x02\x02$&\x05\x06\x04\x02%$\x03" +
+		"\x02\x02\x02&)\x03\x02\x02\x02\'%\x03\x02\x02\x02\'(\x03\x02\x02\x02(" +
+		"*\x03\x02\x02\x02)\'\x03\x02\x02\x02*+\x07=\x02\x02+\x05\x03\x02\x02\x02" +
+		",.\t\x02\x02\x02-,\x03\x02\x02\x02.1\x03\x02\x02\x02/-\x03\x02\x02\x02" +
+		"/0\x03\x02\x02\x0202\x03\x02\x02\x021/\x03\x02\x02\x0223\x076\x02\x02" +
+		"34\x07 \x02\x0245\x07>\x02\x0256\x07?\x02\x0267\x05\b\x05\x027\x07\x03" +
+		"\x02\x02\x028<\x07<\x02\x029;\x05\n\x06\x02:9\x03\x02\x02\x02;>\x03\x02" +
+		"\x02\x02<:\x03\x02\x02\x02<=\x03\x02\x02\x02=?\x03\x02\x02\x02><\x03\x02" +
+		"\x02\x02?@\x07=\x02\x02@\t\x03\x02\x02\x02AD\x05\f\x07\x02BD\x05\x0E\b" +
+		"\x02CA\x03\x02\x02\x02CB\x03\x02\x02\x02D\v\x03\x02\x02\x02EF\x07&\x02" +
+		"\x02FG\x07>\x02\x02GH\x05\x10\t\x02HI\x07?\x02\x02IJ\x07@\x02\x02J\r\x03" +
+		"\x02\x02\x02KL\x05\x10\t\x02LM\x07@\x02\x02M\x0F\x03\x02\x02\x02NO\b\t" +
+		"\x01\x02OP\x05\x12\n\x02P^\x03\x02\x02\x02QR\f\x04\x02\x02RS\x07A\x02" +
+		"\x02S]\x07D\x02\x02TU\f\x03\x02\x02UV\x07A\x02\x02VW\x07D\x02\x02WY\x07" +
+		">\x02\x02XZ\x05\x14\v\x02YX\x03\x02\x02\x02YZ\x03\x02\x02\x02Z[\x03\x02" +
+		"\x02\x02[]\x07?\x02\x02\\Q\x03\x02\x02\x02\\T\x03\x02\x02\x02]`\x03\x02" +
+		"\x02\x02^\\\x03\x02\x02\x02^_\x03\x02\x02\x02_\x11\x03\x02\x02\x02`^\x03" +
+		"\x02\x02\x02ab\t\x03\x02\x02b\x13\x03\x02\x02\x02ch\x05\x10\t\x02de\x07" +
+		"B\x02\x02eg\x05\x10\t\x02fd\x03\x02\x02\x02gj\x03\x02\x02\x02hf\x03\x02" +
+		"\x02\x02hi\x03\x02\x02\x02i\x15\x03\x02\x02\x02jh\x03\x02\x02\x02\f\x19" +
+		"\x1F\'/<CY\\^h";
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
 		if (!YorubaJavaParser.__ATN) {
@@ -849,70 +912,28 @@ export class ExpressionStatementContext extends ParserRuleContext {
 
 
 export class ExpressionContext extends ParserRuleContext {
+	public primary(): PrimaryContext | undefined {
+		return this.tryGetRuleContext(0, PrimaryContext);
+	}
+	public expression(): ExpressionContext | undefined {
+		return this.tryGetRuleContext(0, ExpressionContext);
+	}
+	public DOT(): TerminalNode | undefined { return this.tryGetToken(YorubaJavaParser.DOT, 0); }
+	public ID(): TerminalNode | undefined { return this.tryGetToken(YorubaJavaParser.ID, 0); }
+	public LPAREN(): TerminalNode | undefined { return this.tryGetToken(YorubaJavaParser.LPAREN, 0); }
+	public RPAREN(): TerminalNode | undefined { return this.tryGetToken(YorubaJavaParser.RPAREN, 0); }
+	public argumentList(): ArgumentListContext | undefined {
+		return this.tryGetRuleContext(0, ArgumentListContext);
+	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
 	public get ruleIndex(): number { return YorubaJavaParser.RULE_expression; }
-	public copyFrom(ctx: ExpressionContext): void {
-		super.copyFrom(ctx);
-	}
-}
-export class PrimaryExpressionContext extends ExpressionContext {
-	public primary(): PrimaryContext {
-		return this.getRuleContext(0, PrimaryContext);
-	}
-	constructor(ctx: ExpressionContext) {
-		super(ctx.parent, ctx.invokingState);
-		this.copyFrom(ctx);
-	}
 	// @Override
 	public accept<Result>(visitor: YorubaJavaVisitor<Result>): Result {
-		if (visitor.visitPrimaryExpression) {
-			return visitor.visitPrimaryExpression(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-export class FieldAccessContext extends ExpressionContext {
-	public expression(): ExpressionContext {
-		return this.getRuleContext(0, ExpressionContext);
-	}
-	public DOT(): TerminalNode { return this.getToken(YorubaJavaParser.DOT, 0); }
-	public ID(): TerminalNode { return this.getToken(YorubaJavaParser.ID, 0); }
-	constructor(ctx: ExpressionContext) {
-		super(ctx.parent, ctx.invokingState);
-		this.copyFrom(ctx);
-	}
-	// @Override
-	public accept<Result>(visitor: YorubaJavaVisitor<Result>): Result {
-		if (visitor.visitFieldAccess) {
-			return visitor.visitFieldAccess(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-export class MethodCallContext extends ExpressionContext {
-	public expression(): ExpressionContext {
-		return this.getRuleContext(0, ExpressionContext);
-	}
-	public DOT(): TerminalNode { return this.getToken(YorubaJavaParser.DOT, 0); }
-	public ID(): TerminalNode { return this.getToken(YorubaJavaParser.ID, 0); }
-	public LPAREN(): TerminalNode { return this.getToken(YorubaJavaParser.LPAREN, 0); }
-	public RPAREN(): TerminalNode { return this.getToken(YorubaJavaParser.RPAREN, 0); }
-	public argumentList(): ArgumentListContext | undefined {
-		return this.tryGetRuleContext(0, ArgumentListContext);
-	}
-	constructor(ctx: ExpressionContext) {
-		super(ctx.parent, ctx.invokingState);
-		this.copyFrom(ctx);
-	}
-	// @Override
-	public accept<Result>(visitor: YorubaJavaVisitor<Result>): Result {
-		if (visitor.visitMethodCall) {
-			return visitor.visitMethodCall(this);
+		if (visitor.visitExpression) {
+			return visitor.visitExpression(this);
 		} else {
 			return visitor.visitChildren(this);
 		}

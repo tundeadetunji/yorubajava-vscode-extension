@@ -12,6 +12,28 @@ import { ANTLRInputStream, CommonTokenStream } from "antlr4ts";
 import { YorubaJavaLexer } from "../parser/YorubaJavaLexer";
 import { YorubaJavaParser } from "../parser/YorubaJavaParser";
 import { YorubaJavaTreeVisitor } from "../visitors/YorubaJavaTreeVisitor";
+import fs from "fs";
+import path from "path";
+
+// -------------------------------------------------------
+// Load YorubaJava lexicon dynamically
+// -------------------------------------------------------
+const lexiconPath = path.resolve(__dirname, "../../data/lexicon-v1.0.1.json");
+let lexicon: any = {};
+try {
+  const data = fs.readFileSync(lexiconPath, "utf8");
+  lexicon = JSON.parse(data);
+  console.log(`Loaded YorubaJava lexicon: ${lexicon.meta?.version || "unknown version"}`);
+} catch (err) {
+  console.error("Failed to load lexicon file:", err);
+  lexicon = { keywords: {}, identifiers: {} };
+}
+
+// Extract Yoruba keyword entries (using “default” group for now)
+const keywordMap: Record<string, string[]> = {};
+for (const [eng, obj] of Object.entries<any>(lexicon.keywords || {})) {
+  keywordMap[eng] = Array.isArray(obj.default) ? obj.default : [];
+}
 
 // -------------------------------------------------------
 // Create the LSP connection and text document manager
@@ -26,7 +48,6 @@ connection.onInitialize((_params: InitializeParams) => {
   return {
     capabilities: {
       textDocumentSync: TextDocumentSyncKind.Incremental,
-
       hoverProvider: true,
       completionProvider: {
         resolveProvider: true,
@@ -42,14 +63,12 @@ connection.onInitialize((_params: InitializeParams) => {
 documents.onDidChangeContent((change) => {
   const document = change.document;
 
-  // Normalize entire text (important for Yoruba diacritics)
+  // Normalize text (important for Yoruba diacritics)
   const text = document.getText().normalize("NFC");
-
   const diagnostics: Diagnostic[] = [];
 
   // --- Regex-based Yoruba keyword check (demo) ---
   const commentRanges: [number, number][] = [];
-
   const lineComments = [...text.matchAll(/\/\/.*$/gm)];
   for (const m of lineComments) commentRanges.push([m.index!, m.index! + m[0].length]);
 
@@ -114,7 +133,7 @@ documents.onDidChangeContent((change) => {
 });
 
 // -------------------------------------------------------
-// Hover Support
+// Hover Support (driven by lexicon)
 // -------------------------------------------------------
 connection.onHover((params) => {
   const { textDocument, position } = params;
@@ -129,41 +148,42 @@ connection.onHover((params) => {
   const word =
     left >= 0 && rightMatch ? text.slice(left, offset + rightMatch[0].length) : "";
 
-  const hoverInfo: Record<string, string> = {
-    "gbogbo": "Keyword: declares visibility or scope (public).",
-    "kilasi": "Keyword: 'class' — begins a class declaration.",
-    "diduro": "Keyword: defines a static or shared function.",
-    "ofe": "Keyword: defines the return type 'void'.",
-    "sọ": "Keyword: print statement (equivalent to System.out.println).",
-    "bẹrẹ": "Keyword: 'start' — entry point function (like 'main').",
-  };
+  // Find English keyword whose Yoruba form matches this word
+  const matchingEntry = Object.entries(keywordMap).find(([, variants]) =>
+    variants.includes(word)
+  );
 
-  const contents = hoverInfo[word];
-  return contents
-    ? {
-        contents: {
-          kind: "markdown",
-          value: `**${word}**\n\n${contents}`,
-        },
-      }
-    : null;
+  if (!matchingEntry) return null;
+
+  const [engKeyword, variants] = matchingEntry;
+  const hoverText = `**${word}** — Yoruba for \`${engKeyword}\``;
+
+  return {
+    contents: { kind: "markdown", value: hoverText },
+  };
 });
 
 // -------------------------------------------------------
-// Completion Support
+// Completion Support (driven by lexicon)
 // -------------------------------------------------------
-connection.onCompletion(() => [
-  { label: "gbogbo", kind: 14, detail: "Begin class definition" },
-  { label: "kilasi", kind: 14, detail: "Keyword: class" },
-  { label: "diduro", kind: 14, detail: "Define function" },
-  { label: "ofe", kind: 14, detail: "Return type: void" },
-  { label: "sọ", kind: 14, detail: "Print statement" },
-  { label: "bẹrẹ", kind: 14, detail: "Function entry point" },
-]);
+connection.onCompletion(() => {
+  const items: any[] = [];
+  for (const [eng, variants] of Object.entries(keywordMap)) {
+    for (const yorubaWord of variants) {
+      items.push({
+        label: yorubaWord,
+        kind: 14, // CompletionItemKind.Keyword
+        detail: `Keyword: ${eng}`,
+        documentation: `**${yorubaWord}** — Yoruba translation of \`${eng}\`.`,
+      });
+    }
+  }
+  return items;
+});
 
 connection.onCompletionResolve((item) => ({
   ...item,
-  documentation: `**${item.label}**: YorubaJava keyword.`,
+  documentation: item.documentation || `**${item.label}**: YorubaJava keyword.`,
 }));
 
 // -------------------------------------------------------

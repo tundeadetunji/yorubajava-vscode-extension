@@ -3,9 +3,6 @@
 
 import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
 
-import { PrimaryExpressionContext } from "./YorubaJavaParser";
-import { FieldAccessContext } from "./YorubaJavaParser";
-import { MethodCallContext } from "./YorubaJavaParser";
 import { CompilationUnitContext } from "./YorubaJavaParser";
 import { ClassDeclarationContext } from "./YorubaJavaParser";
 import { MethodDeclarationContext } from "./YorubaJavaParser";
@@ -26,30 +23,6 @@ import { ArgumentListContext } from "./YorubaJavaParser";
  * operations with no return type.
  */
 export interface YorubaJavaVisitor<Result> extends ParseTreeVisitor<Result> {
-	/**
-	 * Visit a parse tree produced by the `primaryExpression`
-	 * labeled alternative in `YorubaJavaParser.expression`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitPrimaryExpression?: (ctx: PrimaryExpressionContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by the `fieldAccess`
-	 * labeled alternative in `YorubaJavaParser.expression`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitFieldAccess?: (ctx: FieldAccessContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by the `methodCall`
-	 * labeled alternative in `YorubaJavaParser.expression`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitMethodCall?: (ctx: MethodCallContext) => Result;
-
 	/**
 	 * Visit a parse tree produced by `YorubaJavaParser.compilationUnit`.
 	 * @param ctx the parse tree

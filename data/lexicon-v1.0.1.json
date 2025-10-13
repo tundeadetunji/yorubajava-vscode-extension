@@ -59,7 +59,6 @@
         },
         "class": {
             "default": [
-                "ẹ̀ka",
                 "eka"
             ],
             "yorlang": [
@@ -189,6 +188,12 @@
             ],
             "yorlang": []
         },
+        "main": {
+            "default": [
+                "pataki"
+            ],
+            "yorlang": []
+        },
         "native": {
             "default": [
                 "abínibí"
@@ -210,6 +215,18 @@
         "package": {
             "default": [
                 "apoti"
+            ],
+            "yorlang": []
+        },
+        "println": {
+            "default": [
+                "kolaini", "kọlaini"
+            ],
+            "yorlang": []
+        },
+        "print": {
+            "default": [
+                "ko"
             ],
             "yorlang": []
         },
@@ -359,18 +376,6 @@
             ],
             "yorlang": []
         },
-        "println": {
-            "default": [
-                "kọlaini"
-            ],
-            "yorlang": []
-        },
-        "print": {
-            "default": [
-                "kọ"
-            ],
-            "yorlang": []
-        },
         "String": {
             "default": [
                 "okùn"
@@ -422,12 +427,6 @@
         "Math": {
             "default": [
                 "isiro"
-            ],
-            "yorlang": []
-        },
-        "main": {
-            "default": [
-                "kókó"
             ],
             "yorlang": []
         },
