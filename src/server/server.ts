@@ -9,8 +9,8 @@ import {
 } from "vscode-languageserver/node";
 import { TextDocument } from "vscode-languageserver-textdocument";
 import { ANTLRInputStream, CommonTokenStream } from "antlr4ts";
-import { YorubaJavaLexer } from "./parser/YorubaJavaLexer";
-import { YorubaJavaParser } from "./parser/YorubaJavaParser";
+import { YorubaJavaLexer } from "../parser/YorubaJavaLexer";
+import { YorubaJavaParser } from "../parser/YorubaJavaParser";
 import { YorubaJavaTreeVisitor } from "../visitors/YorubaJavaTreeVisitor";
 
 // -------------------------------------------------------
@@ -27,36 +27,35 @@ connection.onInitialize((_params: InitializeParams) => {
     capabilities: {
       textDocumentSync: TextDocumentSyncKind.Incremental,
 
-      // --- Stage 4a: Hover + Completion support ---
       hoverProvider: true,
       completionProvider: {
         resolveProvider: true,
-        triggerCharacters: [" ", ".", "(", "ọ", "ṣ", "d"], // Yoruba + common triggers
+        triggerCharacters: [" ", ".", "(", "ọ", "ṣ", "d"],
       },
     },
   };
 });
 
 // -------------------------------------------------------
-// Combined diagnostics: Regex demo + ANTLR parser
+// Combined diagnostics: Regex + ANTLR parser
 // -------------------------------------------------------
 documents.onDidChangeContent((change) => {
   const document = change.document;
-  const text = document.getText();
+
+  // Normalize entire text (important for Yoruba diacritics)
+  const text = document.getText().normalize("NFC");
+
   const diagnostics: Diagnostic[] = [];
 
   // --- Regex-based Yoruba keyword check (demo) ---
   const commentRanges: [number, number][] = [];
 
-  // Match // comments
   const lineComments = [...text.matchAll(/\/\/.*$/gm)];
   for (const m of lineComments) commentRanges.push([m.index!, m.index! + m[0].length]);
 
-  // Match /* ... */ comments
   const blockComments = [...text.matchAll(/\/\*[\s\S]*?\*\//g)];
   for (const m of blockComments) commentRanges.push([m.index!, m.index! + m[0].length]);
 
-  // Detect Yoruba keyword 'asise' (demo)
   const pattern = /\basise\b/g;
   let match: RegExpExecArray | null;
   while ((match = pattern.exec(text))) {
@@ -87,7 +86,7 @@ documents.onDidChangeContent((change) => {
 
     parser.removeErrorListeners();
     parser.addErrorListener({
-      syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg) {
+      syntaxError(_recognizer, _offendingSymbol, line, charPositionInLine, msg) {
         diagnostics.push({
           severity: DiagnosticSeverity.Error,
           message: msg,
@@ -100,53 +99,36 @@ documents.onDidChangeContent((change) => {
       },
     });
 
-    // Parse the file (root rule)
-    parser.compilationUnit();
+    const tree = parser.compilationUnit();
+    const visitor = new YorubaJavaTreeVisitor();
+    visitor.visit(tree);
 
-    // --- Stage 3b: Parse-tree traversal ---
-    try {
-      const tree = parser.compilationUnit();
-      const visitor = new YorubaJavaTreeVisitor();
-      visitor.visit(tree);
-
-      const info = visitor.getCollectedInfo();
-      console.log("Parsed classes:", info.classes);
-      console.log("Parsed methods:", info.methods);
-    } catch (err) {
-      console.error("Visitor error:", err);
-    }
+    const info = visitor.getCollectedInfo();
+    console.log("Parsed classes:", info.classes);
+    console.log("Parsed methods:", info.methods);
   } catch (err) {
     connection.console.error(`Parser error: ${err}`);
   }
 
-  // Send both regex + ANTLR diagnostics to the client
   connection.sendDiagnostics({ uri: document.uri, diagnostics });
 });
 
 // -------------------------------------------------------
-// --- Stage 4b: Hover Support ---
-// -------------------------------------------------------
-// -------------------------------------------------------
-// --- Stage 4b: Hover Support ---
+// Hover Support
 // -------------------------------------------------------
 connection.onHover((params) => {
   const { textDocument, position } = params;
   const document = documents.get(textDocument.uri);
   if (!document) return null;
 
-  // Get offset from position
+  const text = document.getText().normalize("NFC");
   const offset = document.offsetAt(position);
-  const text = document.getText();
 
-  // Find word boundaries (letters, Yoruba letters, or underscore)
   const left = text.slice(0, offset).search(/[a-zA-Zọṣ_]+$/u);
   const rightMatch = text.slice(offset).match(/^[a-zA-Zọṣ_]+/u);
   const word =
-    left >= 0 && rightMatch
-      ? text.slice(left, offset + rightMatch[0].length)
-      : "";
+    left >= 0 && rightMatch ? text.slice(left, offset + rightMatch[0].length) : "";
 
-  // Keyword documentation
   const hoverInfo: Record<string, string> = {
     "gbogbo": "Keyword: declares visibility or scope (public).",
     "kilasi": "Keyword: 'class' — begins a class declaration.",
@@ -157,33 +139,28 @@ connection.onHover((params) => {
   };
 
   const contents = hoverInfo[word];
-  if (contents) {
-    return {
-      contents: {
-        kind: "markdown",
-        value: `**${word}**\n\n${contents}`,
-      },
-    };
-  }
-
-  return null;
+  return contents
+    ? {
+        contents: {
+          kind: "markdown",
+          value: `**${word}**\n\n${contents}`,
+        },
+      }
+    : null;
 });
 
 // -------------------------------------------------------
-// --- Stage 4c: Completion Support ---
+// Completion Support
 // -------------------------------------------------------
-connection.onCompletion((_textDocumentPosition) => {
-  return [
-    { label: "gbogbo", kind: 14, detail: "Begin class definition" },
-    { label: "kilasi", kind: 14, detail: "Keyword: class" },
-    { label: "diduro", kind: 14, detail: "Define function" },
-    { label: "ofe", kind: 14, detail: "Return type: void" },
-    { label: "sọ", kind: 14, detail: "Print statement" },
-    { label: "bẹrẹ", kind: 14, detail: "Function entry point" },
-  ];
-});
+connection.onCompletion(() => [
+  { label: "gbogbo", kind: 14, detail: "Begin class definition" },
+  { label: "kilasi", kind: 14, detail: "Keyword: class" },
+  { label: "diduro", kind: 14, detail: "Define function" },
+  { label: "ofe", kind: 14, detail: "Return type: void" },
+  { label: "sọ", kind: 14, detail: "Print statement" },
+  { label: "bẹrẹ", kind: 14, detail: "Function entry point" },
+]);
 
-// Optional: provide extra info when hovering over completion items
 connection.onCompletionResolve((item) => ({
   ...item,
   documentation: `**${item.label}**: YorubaJava keyword.`,

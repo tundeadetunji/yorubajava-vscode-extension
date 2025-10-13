@@ -1,5 +1,5 @@
-import { YorubaJavaVisitor } from "./parser/YorubaJavaVisitor";
-import { YorubaJavaParser, ClassDeclarationContext, MethodDeclarationContext } from "./parser/YorubaJavaParser";
+import { YorubaJavaVisitor } from "../parser/YorubaJavaVisitor";
+import { YorubaJavaParser, ClassDeclarationContext, MethodDeclarationContext } from "../parser/YorubaJavaParser";
 import { AbstractParseTreeVisitor } from "antlr4ts/tree/AbstractParseTreeVisitor";
 
 /**

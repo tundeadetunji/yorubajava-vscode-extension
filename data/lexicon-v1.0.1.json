@@ -305,7 +305,7 @@
         },
         "void": {
             "default": [
-                "ofo"
+                "ofe"
             ],
             "yorlang": []
         },
@@ -427,7 +427,7 @@
         },
         "main": {
             "default": [
-                "pataki"
+                "kókó"
             ],
             "yorlang": []
         },

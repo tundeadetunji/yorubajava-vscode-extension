@@ -87,6 +87,7 @@
     ]
   },
   "scripts": {
+    "transpile": "npx ts-node scripts/transpile.ts",
     "generate-parser": "antlr4ts -visitor -no-listener -o src/server/parser grammar/YorubaJava.g4",
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
@@ -107,6 +108,7 @@
     "antlr4ts": "^0.5.0-alpha.4",
     "antlr4ts-cli": "^0.5.0-alpha.4",
     "eslint": "^9.36.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
   "dependencies": {

@@ -3,12 +3,19 @@
 
 import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
 
+import { PrimaryExpressionContext } from "./YorubaJavaParser";
+import { FieldAccessContext } from "./YorubaJavaParser";
+import { MethodCallContext } from "./YorubaJavaParser";
 import { CompilationUnitContext } from "./YorubaJavaParser";
 import { ClassDeclarationContext } from "./YorubaJavaParser";
 import { MethodDeclarationContext } from "./YorubaJavaParser";
 import { BlockContext } from "./YorubaJavaParser";
 import { StatementContext } from "./YorubaJavaParser";
 import { PrintStatementContext } from "./YorubaJavaParser";
+import { ExpressionStatementContext } from "./YorubaJavaParser";
+import { ExpressionContext } from "./YorubaJavaParser";
+import { PrimaryContext } from "./YorubaJavaParser";
+import { ArgumentListContext } from "./YorubaJavaParser";
 
 
 /**
@@ -19,6 +26,30 @@ import { PrintStatementContext } from "./YorubaJavaParser";
  * operations with no return type.
  */
 export interface YorubaJavaVisitor<Result> extends ParseTreeVisitor<Result> {
+	/**
+	 * Visit a parse tree produced by the `primaryExpression`
+	 * labeled alternative in `YorubaJavaParser.expression`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitPrimaryExpression?: (ctx: PrimaryExpressionContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `fieldAccess`
+	 * labeled alternative in `YorubaJavaParser.expression`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitFieldAccess?: (ctx: FieldAccessContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `methodCall`
+	 * labeled alternative in `YorubaJavaParser.expression`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitMethodCall?: (ctx: MethodCallContext) => Result;
+
 	/**
 	 * Visit a parse tree produced by `YorubaJavaParser.compilationUnit`.
 	 * @param ctx the parse tree
@@ -60,5 +91,33 @@ export interface YorubaJavaVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitPrintStatement?: (ctx: PrintStatementContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `YorubaJavaParser.expressionStatement`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitExpressionStatement?: (ctx: ExpressionStatementContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `YorubaJavaParser.expression`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitExpression?: (ctx: ExpressionContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `YorubaJavaParser.primary`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitPrimary?: (ctx: PrimaryContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `YorubaJavaParser.argumentList`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitArgumentList?: (ctx: ArgumentListContext) => Result;
 }
 

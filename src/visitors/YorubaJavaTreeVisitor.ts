@@ -1,5 +1,6 @@
 import { YorubaJavaVisitor } from "../parser/YorubaJavaVisitor";
 import { ClassDeclarationContext, MethodDeclarationContext } from "../parser/YorubaJavaParser";
+
 import { AbstractParseTreeVisitor } from "antlr4ts/tree/AbstractParseTreeVisitor";
 
 export interface CollectedInfo {
