@@ -97,31 +97,27 @@ documents.onDidChangeContent((change) => {
   }
 
   // --- ANTLR parser-based syntax validation ---
+  // ⚙️ Relaxed mode: don't emit parser errors to VS Code
   try {
     const inputStream = new ANTLRInputStream(text);
     const lexer = new YorubaJavaLexer(inputStream);
     const tokenStream = new CommonTokenStream(lexer);
     const parser = new YorubaJavaParser(tokenStream);
 
+    // Remove all listeners (no squiggles)
+    lexer.removeErrorListeners();
     parser.removeErrorListeners();
-    parser.addErrorListener({
-      syntaxError(_recognizer, _offendingSymbol, line, charPositionInLine, msg) {
-        diagnostics.push({
-          severity: DiagnosticSeverity.Error,
-          message: msg,
-          range: {
-            start: { line: line - 1, character: charPositionInLine },
-            end: { line: line - 1, character: charPositionInLine + 1 },
-          },
-          source: "YorubaJava Parser",
-        });
-      },
-    });
+
+    // Optional: add a silent listener to swallow events
+    const silentErrorListener = {
+      syntaxError() { /* ignore completely */ },
+    };
+    parser.addErrorListener(silentErrorListener);
+    lexer.addErrorListener(silentErrorListener);
 
     const tree = parser.compilationUnit();
     const visitor = new YorubaJavaTreeVisitor();
     visitor.visit(tree);
-
     const info = visitor.getCollectedInfo();
     console.log("Parsed classes:", info.classes);
     console.log("Parsed methods:", info.methods);
